@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evie's Cafe | Artisan Bakery</title>
+    
+    <!-- Fonts: Pinyon Script (Hero), Playfair Display (Headings), Inter (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bone: '#F5F5F0',
+                        cream: '#FAF9F6',
+                        espresso: '#3B2F2F',
+                        bronze: '#8C7853',
+                        stone: '#A8A29E',
+                        'espresso-light': '#5D4E4E',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        script: ['Pinyon Script', 'cursive'],
+                    },
+                    backgroundImage: {
+                        'grain': "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.08%22/%3E%3C/svg%3E')",
+                    },
+                    boxShadow: {
+                        'polaroid': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 5px 5px 15px rgba(59, 47, 47, 0.15)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Utilities */
+        body {
+            background-color: #F5F5F0;
+            color: #3B2F2F;
+        }
+
+        /* Film Grain Overlay */
+        .grain-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.4"/%3E%3C/svg%3E');
+            opacity: 0.06;
+            mix-blend-mode: multiply;
+        }
+
+        /* Hide scrollbar for clean aesthetic */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F5F5F0;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D6D3D1;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #A8A29E;
+        }
+
+        /* Text Selection */
+        ::selection {
+            background: #3B2F2F;
+            color: #F5F5F0;
+        }
+
+        /* Utility: Vertical Text */
+        .vertical-text {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+        }
+        
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, visibility;
+        }
+        
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: none;
+        }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden relative">
+
+    <!-- Global Grain Overlay -->
+    <div class="grain-overlay"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full z-40 px-6 py-8 md:px-12 flex justify-between items-center bg-bone/90 backdrop-blur-sm transition-all duration-300 border-b border-espresso/5">
+        <a href="#" class="font-serif text-2xl tracking-widest uppercase text-espresso">Evie's Cafe</a>
+        
+        <!-- Desktop Nav -->
+        <div class="hidden md:flex space-x-10 text-xs tracking-[0.2em] font-sans uppercase text-espresso/80">
+            <a href="#menu" class="hover:text-espresso transition-colors duration-200">Menu</a>
+            <a href="#gallery" class="hover:text-espresso transition-colors duration-200">Gallery</a>
+            <a href="#story" class="hover:text-espresso transition-colors duration-200">Story</a>
+            <a href="#order" class="hover:text-espresso transition-colors duration-200">Order</a>
+            <a href="#visit" class="hover:text-espresso transition-colors duration-200">Visit</a>
+        </div>
+
+        <!-- Mobile Menu Icon (Hidden functionality for simplicity of prototype, just icon) -->
+        <button class="md:hidden text-espresso">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative min-h-screen flex flex-col items-center justify-center pt-20 overflow-hidden">
+        
+        <!-- Background Elements -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-[#EBE9E1] rounded-[50%] blur-[100px] -z-10 opacity-60"></div>
+
+        <!-- Typography -->
+        <div class="relative z-10 text-center space-y-2 max-w-4xl mx-auto px-4">
+            <div class="relative inline-block">
+                <!-- Beige Brush Swatch SVG behind text -->
+                <svg class="absolute -top-4 -left-8 w-[120%] h-[140%] -z-10 opacity-50 text-[#E3DCCF]" viewBox="0 0 200 100" fill="currentColor">
+                    <path d="M10,50 Q50,5 90,40 T190,50" stroke="currentColor" stroke-width="40" stroke-linecap="round" fill="none" />
+                </svg>
+                <h1 class="font-script text-7xl md:text-9xl text-espresso leading-none drop-shadow-sm">Evie's Cafe</h1>
+            </div>
+            <p class="font-sans text-xs md:text-sm tracking-[0.3em] uppercase text-espresso-light mt-6 font-light">Discover The Sweetest Side Of Life!</p>
+            
+            <!-- Locations List (Restored) -->
+            <p class="font-sans text-[10px] md:text-xs tracking-widest uppercase text-bronze/90 mt-4 max-w-3xl mx-auto leading-loose">
+                Mesquite · Rockwall · Richardson · Garland · Frisco · Dallas · Wylie · Rowlett · Plano
+            </p>
+        </div>
+
+        <!-- Collage Composition -->
+        <div class="relative w-full max-w-5xl h-[400px] md:h-[500px] mt-12 md:mt-24 pointer-events-none select-none">
+            
+            <!-- Twine Line SVG -->
+            <svg class="absolute top-0 left-0 w-full h-full z-20 pointer-events-none stroke-stone/40" style="stroke-dasharray: 10, 5;">
+                <path d="M100,200 C250,150 400,350 500,200 S700,50 850,250" fill="none" stroke-width="1.5" />
+            </svg>
+
+            <!-- Polaroid 1 (Croissant) -->
+            <div class="absolute left-[10%] md:left-[20%] top-10 w-48 md:w-64 bg-white p-3 pb-8 shadow-polaroid transform -rotate-6 transition-transform duration-700 hover:-rotate-3 z-10">
+                <div class="aspect-[4/5] bg-gray-200 overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=1000&auto=format&fit=crop" alt="Croissant" class="object-cover w-full h-full grayscale-[20%] sepia-[10%] opacity-90">
+                    <div class="absolute inset-0 bg-stone-900/5 mix-blend-multiply"></div>
+                </div>
+            </div>
+
+            <!-- Polaroid 2 (Cinnamon Roll) -->
+            <div class="absolute right-[10%] md:right-[20%] top-24 w-48 md:w-64 bg-white p-3 pb-8 shadow-polaroid transform rotate-3 transition-transform duration-700 hover:rotate-6 z-10">
+                <div class="aspect-[4/5] bg-gray-200 overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1509365465985-25d11c17e812?q=80&w=1000&auto=format&fit=crop" alt="Cinnamon Roll" class="object-cover w-full h-full grayscale-[20%] sepia-[10%] opacity-90">
+                    <div class="absolute inset-0 bg-stone-900/5 mix-blend-multiply"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center space-y-2 opacity-60">
+            <span class="text-[10px] uppercase tracking-widest font-sans">Scroll</span>
+            <div class="w-[1px] h-12 bg-espresso/30"></div>
+        </div>
+    </header>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-24 md:py-32 px-6 md:px-12 max-w-7xl mx-auto fade-in-section">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 border-b border-espresso/10 pb-8">
+            <div>
+                <h2 class="font-serif text-4xl md:text-5xl italic text-espresso mb-2">Our Offerings</h2>
+                <p class="font-sans text-xs tracking-widest text-stone-500 uppercase">Baked fresh daily • Until sold out</p>
+            </div>
+            
+            <!-- Filters -->
+            <div class="flex flex-wrap gap-4 mt-8 md:mt-0" id="menu-filters">
+                <button class="filter-btn active text-xs tracking-widest uppercase border border-espresso px-4 py-2 bg-espresso text-bone hover:bg-espresso/90 transition-colors" data-filter="all">All</button>
+                <button class="filter-btn text-xs tracking-widest uppercase border border-espresso/20 px-4 py-2 hover:border-espresso transition-colors text-espresso/70" data-filter="pastry">Pastries</button>
+                <button class="filter-btn text-xs tracking-widest uppercase border border-espresso/20 px-4 py-2 hover:border-espresso transition-colors text-espresso/70" data-filter="bread">Breads</button>
+                <button class="filter-btn text-xs tracking-widest uppercase border border-espresso/20 px-4 py-2 hover:border-espresso transition-colors text-espresso/70" data-filter="cake">Cakes</button>
+            </div>
+        </div>
+
+        <!-- Masonry Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12" id="menu-grid">
+            <!-- Items injected via JS -->
+        </div>
+    </section>
+
+    <!-- Gallery Section (Full Bleed) -->
+    <section id="gallery" class="py-20 fade-in-section">
+        <div class="grid grid-cols-12 gap-0">
+            <!-- Large Focus -->
+            <div class="col-span-12 md:col-span-8 aspect-[16/9] md:aspect-auto md:h-[600px] relative overflow-hidden group">
+                <img src="https://images.unsplash.com/photo-1550950158-d0d960dff51b?q=80&w=1600&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" alt="Bread texture">
+                <div class="absolute inset-0 bg-espresso/10 group-hover:bg-espresso/0 transition-colors duration-500"></div>
+            </div>
+            
+            <!-- Side Detail -->
+            <div class="col-span-12 md:col-span-4 bg-espresso text-bone p-12 flex flex-col justify-center">
+                <span class="font-script text-4xl text-bronze/80 mb-4">Texture</span>
+                <p class="font-serif text-2xl italic leading-relaxed">"We respect the grain. Every loaf tells the story of the soil it came from."</p>
+            </div>
+
+            <!-- Triple Grid -->
+            <div class="col-span-4 aspect-square overflow-hidden relative">
+                 <img src="https://images.unsplash.com/photo-1623334044303-241021148842?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover" alt="Baker hands">
+            </div>
+            <div class="col-span-4 aspect-square overflow-hidden relative">
+                 <img src="https://images.unsplash.com/photo-1586444248902-2f64eddc13df?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover" alt="Dough rising">
+            </div>
+            <div class="col-span-4 aspect-square overflow-hidden relative">
+                 <img src="https://images.unsplash.com/photo-1517433670267-08bbd4be890f?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover" alt="Oven">
+            </div>
+        </div>
+    </section>
+
+    <!-- Story / Provenance -->
+    <section id="story" class="py-32 px-6 md:px-12 max-w-5xl mx-auto fade-in-section">
+        <div class="grid md:grid-cols-2 gap-16 items-center">
+            <div class="space-y-8">
+                <h3 class="font-serif text-4xl italic text-espresso">Provenance & Process</h3>
+                <div class="w-12 h-[1px] bg-bronze"></div>
+                
+                <!-- Moved Bio Text Here -->
+                <p class="font-serif text-espresso text-lg italic leading-relaxed">
+                    "Step into Evie's Cafe, where I bake every bite with heart. I craft treats meant to feel special, straight from my oven to your day. Here, you can sink into the smell of warm, fresh baking and find a quiet moment of joy."
+                </p>
+
+                <p class="font-sans text-stone-600 leading-loose text-sm pt-4">
+                    We believe in the discipline of subtraction. No improvers, no shortcuts. Just stone-milled flour from the Skagit Valley, wild yeast culture nurtured for seven years, filtered water, and sea salt.
+                </p>
+                <p class="font-sans text-stone-600 leading-loose text-sm">
+                    Our fermentation process lasts 36 to 48 hours, allowing the enzymes to unlock the full nutritional potential and flavor profile of the grain.
+                </p>
+                
+                <ul class="space-y-4 mt-8">
+                    <li class="flex items-center space-x-4 text-xs tracking-widest uppercase text-espresso">
+                        <span class="w-1.5 h-1.5 rounded-full bg-bronze"></span>
+                        <span>Stone-Milled Heirloom Grains</span>
+                    </li>
+                    <li class="flex items-center space-x-4 text-xs tracking-widest uppercase text-espresso">
+                        <span class="w-1.5 h-1.5 rounded-full bg-bronze"></span>
+                        <span>Long Cold Fermentation</span>
+                    </li>
+                    <li class="flex items-center space-x-4 text-xs tracking-widest uppercase text-espresso">
+                        <span class="w-1.5 h-1.5 rounded-full bg-bronze"></span>
+                        <span>Hand-Laminated Pastry</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="relative pl-8 md:pl-0">
+                <div class="aspect-[3/4] border border-espresso/10 p-4">
+                    <div class="w-full h-full bg-[#EBE9E1] flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-20" style="background-image: repeating-linear-gradient(45deg, #3B2F2F 0, #3B2F2F 1px, transparent 0, transparent 50%); background-size: 10px 10px;"></div>
+                        <span class="font-script text-6xl text-espresso/40 -rotate-12">Est. 2024</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Order / Visit Section -->
+    <section id="order" class="bg-espresso text-bone py-32 relative overflow-hidden fade-in-section">
+        <!-- Subtle bronze accent background -->
+        <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-bronze/10 to-transparent pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+            <div class="grid md:grid-cols-2 gap-20">
+                <!-- Order -->
+                <div>
+                    <h3 class="font-serif text-3xl italic mb-8">Reserve Your Daily Bread</h3>
+                    <p class="font-sans text-bone/70 text-sm leading-relaxed mb-10 max-w-sm">
+                        Our quantities are limited by the capacity of our hands and our ovens. We recommend pre-ordering 48 hours in advance for large gatherings.
+                    </p>
+                    <a href="#" class="inline-flex items-center space-x-3 border border-bone/30 px-8 py-4 uppercase tracking-[0.2em] text-xs hover:bg-bone hover:text-espresso transition-colors duration-300">
+                        <span>Start Order</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <!-- Visit/Hours -->
+                <div id="visit" class="border-l border-bone/10 pl-8 md:pl-16 space-y-12">
+                    <div>
+                        <h4 class="font-sans text-xs tracking-widest uppercase text-bronze mb-4">Contact</h4>
+                        <div class="font-serif text-xl space-y-1">
+                            <p>eviescafe.net</p>
+                            <p>+1 469-380-3489</p>
+                            <p class="text-lg">eviescafe@outlook.com</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Removed Service Area List (Restored to Hero) -->
+
+                    <div>
+                        <h4 class="font-sans text-xs tracking-widest uppercase text-bronze mb-4">Hours</h4>
+                        <div class="grid grid-cols-2 gap-8 text-sm text-bone/80">
+                            <div>
+                                <span class="block text-xs uppercase opacity-50 mb-1">Mon — Fri</span>
+                                <span>7:00 AM — Sold Out</span>
+                            </div>
+                            <div>
+                                <span class="block text-xs uppercase opacity-50 mb-1">Sat — Sun</span>
+                                <span>8:00 AM — 2:00 PM</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-6">
+                        <a href="https://instagram.com/evies.cafe" target="_blank" rel="noopener noreferrer" class="text-bone/60 hover:text-bone transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                        <a href="mailto:eviescafe@outlook.com" class="text-bone/60 hover:text-bone transition-colors"><i data-lucide="mail" class="w-5 h-5"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-[#2C2323] text-stone-500 py-12 px-6 border-t border-white/5 text-center md:text-left">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-[10px] uppercase tracking-widest">
+            <span class="mb-4 md:mb-0">&copy; 2024 Evie's Cafe.</span>
+            <div class="flex space-x-6">
+                <a href="#" class="hover:text-stone-300 transition-colors">Privacy</a>
+                <a href="#" class="hover:text-stone-300 transition-colors">Terms</a>
+                <a href="#" class="hover:text-stone-300 transition-colors">Credits</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Menu Data
+        const menuItems = [
+            {
+                id: 1,
+                name: "Pain au Chocolat",
+                category: "pastry",
+                price: "$5.50",
+                notes: "Valrhona 66%, Isigny Butter",
+                image: "https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?q=80&w=600&auto=format&fit=crop"
+            },
+            {
+                id: 2,
+                name: "Morning Bun",
+                category: "pastry",
+                price: "$4.75",
+                notes: "Orange Zest, Ceylon Cinnamon, Sugar",
+                image: "https://images.unsplash.com/photo-1623653387945-2fd25214f8fc?q=80&w=600&auto=format&fit=crop"
+            },
+            {
+                id: 3,
+                name: "Country Loaf",
+                category: "bread",
+                price: "$11.00",
+                notes: "High Hydration, Whole Wheat Blend",
+                image: "https://images.unsplash.com/photo-1598373182133-52452f7691ef?q=80&w=600&auto=format&fit=crop"
+            },
+            {
+                id: 4,
+                name: "Olive Fougasse",
+                category: "bread",
+                price: "$9.00",
+                notes: "Castelvetrano Olives, Herbes de Provence",
+                image: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?q=80&w=600&auto=format&fit=crop"
+            },
+            {
+                id: 5,
+                name: "Basque Cheesecake",
+                category: "cake",
+                price: "$8.00",
+                notes: "Burnt Top, Creamy Center, GF",
+                image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=600&auto=format&fit=crop"
+            },
+            {
+                id: 6,
+                name: "Fig & Walnut",
+                category: "seasonal",
+                price: "$12.50",
+                notes: "Black Mission Figs, Toasted Walnuts",
+                image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=600&auto=format&fit=crop"
+            }
+        ];
+
+        // Render Menu
+        const grid = document.getElementById('menu-grid');
+        
+        function renderMenu(filter = 'all') {
+            grid.innerHTML = '';
+            
+            const filteredItems = filter === 'all' 
+                ? menuItems 
+                : menuItems.filter(item => item.category === filter);
+
+            filteredItems.forEach((item, index) => {
+                // Stagger animation delay
+                const delay = index * 100;
+                
+                const card = document.createElement('div');
+                card.className = 'group cursor-pointer opacity-0 translate-y-4';
+                card.style.animation = `fadeInUp 0.6s ease-out ${delay}ms forwards`;
+                
+                card.innerHTML = `
+                    <div class="relative overflow-hidden aspect-[4/3] mb-4 bg-gray-100">
+                        <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 filter grayscale-[20%] group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-espresso/80 flex flex-col items-center justify-center text-bone opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-sm">
+                            <span class="font-serif italic text-xl mb-2">${item.price}</span>
+                            <span class="font-sans text-[10px] uppercase tracking-widest text-center px-4">${item.notes}</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-baseline border-b border-espresso/10 pb-2 group-hover:border-espresso/40 transition-colors">
+                        <h3 class="font-serif text-lg text-espresso">${item.name}</h3>
+                        <span class="text-[10px] uppercase tracking-widest text-stone-500">${item.category}</span>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        // Add Keyframes for JS animation
+        const styleSheet = document.createElement("style");
+        styleSheet.innerText = `
+            @keyframes fadeInUp {
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+
+        // Filter Logic
+        const buttons = document.querySelectorAll('.filter-btn');
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update Active State
+                buttons.forEach(b => {
+                    b.classList.remove('bg-espresso', 'text-bone');
+                    b.classList.add('text-espresso/70');
+                });
+                btn.classList.add('bg-espresso', 'text-bone');
+                btn.classList.remove('text-espresso/70');
+                
+                // Render
+                renderMenu(btn.dataset.filter);
+            });
+        });
+
+        // Intersection Observer for Scroll Reveals
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target); // Only animate once
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Initial Render
+        renderMenu();
+
+    </script>
+</body>
+</html>
